@@ -13,7 +13,6 @@ import site.gongnomok.common.enhanceditem.dto.response.UpdateEnhancementResponse
 import site.gongnomok.common.exception.EnhancedItemException;
 import site.gongnomok.common.exception.ExceptionCode;
 import site.gongnomok.common.exception.ItemException;
-import site.gongnomok.data.enhanceditem.domain.EnhanceItemValidator;
 import site.gongnomok.data.enhanceditem.domain.EnhanceScroll;
 import site.gongnomok.data.enhanceditem.domain.EnhancedItem;
 import site.gongnomok.data.enhanceditem.domain.repository.EnhancedItemRepository;
@@ -30,7 +29,7 @@ public class EnhancedItemService {
 
     private final ItemRepository itemRepository;
     private final EnhancedItemRepository enhancedItemRepository;
-    private final EnhanceItemValidator validator;
+    private final BaseEnhancedItemValidator validator;
 
     /**
      * @param itemId 특정 아이템의 기록을 읽어온다.
@@ -57,7 +56,7 @@ public class EnhancedItemService {
         final Long itemId,
         final ItemEnhanceServiceRequest request
     ) {
-        validator.validateRequest(request);
+        validator.validateRequest(itemId, request);
 
         Optional<EnhancedItem> enhancedItemOptional = itemRepository.findEnhanceItem(itemId);
         if (enhancedItemOptional.isEmpty()) {
@@ -83,7 +82,7 @@ public class EnhancedItemService {
         Item item = itemRepository
             .findById(itemId)
             .orElseThrow(() -> new ItemException(ExceptionCode.NOT_FOUND_ITEM_ID));
-        int score = EnhanceScroll.calculateScore(enhanceDto.getSuccess(), enhanceDto.getName());
+        int score = EnhanceScroll.calculateScore(enhanceDto.getSuccess(), enhanceDto.getScroll());
         EnhancedItem enhancedItem = EnhancedItem.from(enhanceDto, score);
         enhancedItem.changeItem(item);
         enhancedItemRepository.save(enhancedItem);

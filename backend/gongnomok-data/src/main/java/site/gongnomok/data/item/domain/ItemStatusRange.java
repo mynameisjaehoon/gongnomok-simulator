@@ -32,4 +32,12 @@ public class ItemStatusRange {
             .build();
     }
 
+    public static ItemStatusRange defaultRange() {
+        return ItemStatusRange.builder()
+            .lower(3)
+            .normal(5)
+            .upper(3)
+            .build();
+    }
+
 }

@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://34.64.214.28:3306/gongnomok?serverTimeZone=Asia/Seoul&characterEncoding=UTF-8
-    username: jaehoon
+    url: jdbc:mysql://34.64.244.53:3306/gongnomok?serverTimeZone=Asia/Seoul&characterEncoding=UTF-8
+    username: jh
     password: jh980101^^
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -12,8 +12,12 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-#        dialect: org.hi
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true
     open-in-view: false
+
+  data:
+    redis:
+      port: 6379
+      host: localhost

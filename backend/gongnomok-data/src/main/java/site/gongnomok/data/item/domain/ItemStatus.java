@@ -70,4 +70,24 @@ public class ItemStatus {
             .build();
     }
 
+    public static ItemStatus defaultObject() {
+        return ItemStatus.builder()
+            .str(ItemStatusRange.defaultRange())
+            .dex(ItemStatusRange.defaultRange())
+            .intel(ItemStatusRange.defaultRange())
+            .luk(ItemStatusRange.defaultRange())
+            .phyAtk(ItemStatusRange.defaultRange())
+            .mgAtk(ItemStatusRange.defaultRange())
+            .phyDef(ItemStatusRange.defaultRange())
+            .mgDef(ItemStatusRange.defaultRange())
+            .hp(ItemStatusRange.defaultRange())
+            .mp(ItemStatusRange.defaultRange())
+            .acc(ItemStatusRange.defaultRange())
+            .avo(ItemStatusRange.defaultRange())
+            .move(ItemStatusRange.defaultRange())
+            .jump(ItemStatusRange.defaultRange())
+            .build();
+    }
+
+
 }

@@ -66,7 +66,6 @@ public class BaseBanWordService implements BanWordService {
     @Override
     @Transactional
     public Long addBanWord(String word) {
-        log.info("새로운 금칙어 등록={}", word);
         BanWord banWord = new BanWord(word);
         banWordRepository.save(banWord);
 

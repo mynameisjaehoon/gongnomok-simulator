@@ -25,17 +25,11 @@ public class ListBanWordFetcher implements BanWordFetcher {
     @Scheduled(
         fixedDelayString = "${gongnomok.banword.polling.refreshMinutes}",
         timeUnit = TimeUnit.MINUTES)
-
     public List<String> fetchBanWords() {
-
-        log.info("Run fetchBanWords()");
-
-        List<String> list = repository.findAll()
+        return repository.findAll()
             .stream()
             .map(BanWord::getWord)
             .toList();
-//        log.info("금칙어 목록모음: {}", String.join(",", list));
-        return list;
     }
 
 }

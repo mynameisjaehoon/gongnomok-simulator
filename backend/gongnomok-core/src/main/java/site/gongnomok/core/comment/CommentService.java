@@ -2,6 +2,8 @@ package site.gongnomok.core.comment;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.gongnomok.common.comment.dto.request.CommentCreateServiceDto;
@@ -15,6 +17,8 @@ import site.gongnomok.common.exception.ItemException;
 import site.gongnomok.common.global.util.SecurityUtil;
 import site.gongnomok.core.banword.wordfilter.BanWordFilter;
 import site.gongnomok.data.comment.domain.Comment;
+import site.gongnomok.data.comment.domain.CommentCount;
+import site.gongnomok.data.comment.domain.repository.CommentCountRedisRepository;
 import site.gongnomok.data.comment.domain.repository.CommentJpaRepository;
 import site.gongnomok.data.comment.domain.repository.CommentQueryRepository;
 import site.gongnomok.data.item.domain.Item;
@@ -33,13 +37,24 @@ public class CommentService {
     private final ItemRepository itemRepository;
     private final CommentQueryRepository commentQueryRepository;
     private final CommentJpaRepository commentJpaRepository;
+    private final CommentCountRedisRepository commentCountRedisRepository;
     private final ReportCommentJpaRepository reportCommentJpaRepository;
     private final BanWordFilter banWordFilter;
+    private final RedisTemplate<String, CommentCount> commentCountRedisTemplate;
+
+    @Value("${comment.constant.max-count}")
+    private int maxCount;
+
+    @Value("${comment.constant.expire-seconds}")
+    private int expireSeconds;
 
     public CommentDto createComment(
         final CommentCreateServiceDto createDto,
-        final Long itemId
+        final Long itemId,
+        final String address
     ) {
+
+        checkAndUpdateCommentCount(address);
 
         String encryptedPassword = SecurityUtil.encryptSha256(createDto.getPassword());
         boolean result = banWordFilter.checkContainBanWord(createDto.getContent());
@@ -59,6 +74,19 @@ public class CommentService {
 
         return savedComment.toDto();
 
+    }
+
+    private void checkAndUpdateCommentCount(String address) {
+        CommentCount commentCount = commentCountRedisRepository
+            .findById(address)
+            .orElse(CommentCount.init(address));
+
+        if (commentCount.getCount() >= maxCount) {
+            throw new CommentException(ExceptionCode.COMMENT_RATE_LIMIT);
+        }
+
+        commentCount.increaseCount();
+        commentCountRedisRepository.save(commentCount);
     }
 
     @Transactional(readOnly = true)

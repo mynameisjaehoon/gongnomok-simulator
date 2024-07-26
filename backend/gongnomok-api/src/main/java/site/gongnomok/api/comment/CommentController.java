@@ -1,6 +1,7 @@
 package site.gongnomok.api.comment;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,12 @@ public class CommentController {
 
     @PostMapping("/item/{itemId}/comment")
     public ResponseEntity<CommentDto> createComment(
-        @PathVariable(name = "itemId") Long itemId,
-        @RequestBody CommentCreateDto requestDto
+        final HttpServletRequest request,
+        @PathVariable(name = "itemId") final Long itemId,
+        @RequestBody final CommentCreateDto requestDto
     ) {
-        CommentDto createdComment = commentService.createComment(requestDto.toServiceDto(), itemId);
+        String address = request.getHeader("X-FORWARDED-FOR") != null ? request.getHeader("X-FORWARDED-FOR") : request.getRemoteAddr();
+        CommentDto createdComment = commentService.createComment(requestDto.toServiceDto(), itemId, address);
 
         return ResponseEntity
             .status(HttpStatus.CREATED)

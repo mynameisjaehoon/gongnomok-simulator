@@ -1,15 +1,13 @@
 package site.gongnomok.common.enhanceditem.dto.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class EnhanceSuccessDto {
 
     private int total;

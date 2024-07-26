@@ -42,4 +42,15 @@ public class RequiredStatus {
             .build();
     }
 
+    public static RequiredStatus allZero() {
+        return RequiredStatus.builder()
+            .requiredLevel(0)
+            .requiredStr(0)
+            .requiredDex(0)
+            .requiredInt(0)
+            .requiredLuk(0)
+            .requiredPop(0)
+            .build();
+    }
+
 }

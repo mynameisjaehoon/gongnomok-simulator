@@ -41,4 +41,14 @@ public class AvailableJob {
             .build();
     }
 
+    public static AvailableJob allFalse() {
+        return AvailableJob.builder()
+            .common(false)
+            .warrior(false)
+            .bowman(false)
+            .magician(false)
+            .thief(false)
+            .build();
+    }
+
 }

@@ -20,6 +20,6 @@ WORKDIR /backend
 FROM openjdk:17-oracle as builder
 WORKDIR /backend
 
-ARG JAR_PATH=build/libs/gongnomok-app.jar
+ARG JAR_PATH=gongnomok-api/build/libs/gongnomok-api-1.0.0.jar
 COPY ${JAR_PATH} app.jar
 ENTRYPOINT [ "java", "-jar", "app.jar" ]

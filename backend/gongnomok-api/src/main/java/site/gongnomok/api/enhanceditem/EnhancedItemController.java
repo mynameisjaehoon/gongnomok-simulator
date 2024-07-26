@@ -2,6 +2,7 @@ package site.gongnomok.api.enhanceditem;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.gongnomok.common.enhanceditem.dto.request.ItemEnhanceRequest;
@@ -12,6 +13,7 @@ import site.gongnomok.core.enhanceditem.EnhancedItemService;
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class EnhancedItemController {
 
     private final EnhancedItemService enhancedItemService;
@@ -29,6 +31,7 @@ public class EnhancedItemController {
         @PathVariable("itemId") Long itemId,
         @RequestBody ItemEnhanceRequest enhanceDto
     ) {
+        log.info("enhanceDto: {}", enhanceDto);
         UpdateEnhancementResponse response = enhancedItemService.updateEnhanceItem(itemId, enhanceDto.toServiceDto());
         return ResponseEntity.ok(response);
     }

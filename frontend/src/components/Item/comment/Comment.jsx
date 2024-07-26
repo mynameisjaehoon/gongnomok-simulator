@@ -76,7 +76,7 @@ export default function Comment({ itemId }) {
   }
 
   function validateContent() {
-    if (commentForm.content.length == 0 || commentForm.content.length > 200) {
+    if (commentForm.content.length < 5 || commentForm.content.length > 200) {
       setIsContentValid(false);
       return false;
     }
@@ -297,7 +297,7 @@ export default function Comment({ itemId }) {
         <div className="comment-error-container">
           {!isNameValid && <div><span className="red">이름을 입력해주세요.</span></div>}
           {!isPasswordValid && <div><span className="red">패스워드를 입력해주세요.</span></div>}
-          {!isContentValid && <div><span className="red">댓글은 1~200자를 입력해야합니다.</span></div>}
+          {!isContentValid && <div><span className="red">댓글은 5~200자를 입력해야합니다.</span></div>}
         </div>
         <section className="single-comment-container mt-2">
           {
